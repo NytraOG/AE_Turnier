@@ -11,7 +11,6 @@ namespace Domain
         {
             Mannschaften = new List<Mannschaft>();
         }
-
         public DateTime         TurnierDatum { get; set; }
         public List<Mannschaft> Mannschaften { get; set; }
 
@@ -50,7 +49,15 @@ namespace Domain
 
         public List<Mannschaft> TabelleAnzeigen()
         {
-            throw new NotImplementedException();
+            if(Mannschaften.Count <= 0)
+                throw new PassAufDummkopfException("Keine Mannschaften vorhanden, um Punkte berechnen zu können!");
+
+            var mannschaftenNachPunktenSortiert = Mannschaften
+                .OrderByDescending(m => m.Punktzahl)
+                .ThenByDescending(m => m.GeschosseneTore)
+                .ToList();
+
+            return mannschaftenNachPunktenSortiert;
         }
     }
 }
